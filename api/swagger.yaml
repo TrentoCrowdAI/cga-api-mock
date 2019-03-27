@@ -1,0 +1,4437 @@
+---
+swagger: "2.0"
+info:
+  description: "Simple server in order to create and mantain CGA Survey"
+  version: "1.0.0"
+  title: "CGA Survey"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "a@a.com"
+  license:
+    name: "MIT"
+    url: "https://github.com/TrentoCrowdAI/CGA/blob/master/LICENSE"
+host: "cga-mock-server.herokuapp.com"
+basePath: "/v1"
+tags:
+- name: "project"
+  description: "Project to collect datas"
+- name: "dataCollection"
+  description: "DataCollection of surveys"
+- name: "survey"
+  description: "Access/Modify the survey"
+- name: "surveyComponent"
+  description: "Components that compose the survey"
+- name: "surveyItem"
+  description: "Items that compose a surveyComponent"
+- name: "surveyImage"
+  description: "Items that compose a surveyComponent"
+- name: "flowConstraint"
+  description: "Constraint that determine the flow between surveyItems"
+- name: "rule"
+  description: "Obejct in order to apply consistency checks"
+- name: "validatorItem"
+  description: "Item in order to check the values that the user insert"
+- name: "label"
+  description: "Label assigned to a surveyComponent"
+- name: "surveyItemOption"
+  description: "Options that compose a surveyItem"
+- name: "subject"
+  description: "Subject member of the system"
+- name: "datetime"
+  description: "Object that represents a time and a date"
+schemes:
+- "https"
+paths:
+  /projects:
+    get:
+      tags:
+      - "project"
+      summary: "Get all project"
+      description: "Performed by a user in order to get all projects"
+      operationId: "getProjects"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/project"
+        400:
+          description: "Bad request"
+      x-swagger-router-controller: "Project"
+    post:
+      tags:
+      - "project"
+      summary: "Add a new project"
+      description: "Performed by a user when he wants to create a new project"
+      operationId: "addProject"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "project"
+        description: "Project object that needs to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/project_1"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/project"
+        400:
+          description: "Bad Request"
+      x-swagger-router-controller: "Project"
+  /projects/{id}:
+    get:
+      tags:
+      - "project"
+      summary: "Get an project by the id"
+      description: "Performed by users in order to get specific project"
+      operationId: "getProject"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The Project id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/project"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Project not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "Project"
+    put:
+      tags:
+      - "project"
+      summary: "Update an existing project"
+      description: "Performed by a user in order to update the project"
+      operationId: "updateProject"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The Project id"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "Project object that needs to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/body"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/project"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Project not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "Project"
+    delete:
+      tags:
+      - "project"
+      summary: "Delete a Project by id"
+      description: "Performed by the user in order to delete the Project from the\
+        \ system"
+      operationId: "deleteProject"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The Project id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/project"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Project not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "Project"
+  /dataCollections:
+    get:
+      tags:
+      - "dataCollection"
+      summary: "Get all dataCollection"
+      description: "Performed by a user in order to get all dataCollections"
+      operationId: "getAllDataCollections"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/dataCollection"
+        400:
+          description: "Bad request"
+      x-swagger-router-controller: "DataCollection"
+    post:
+      tags:
+      - "dataCollection"
+      summary: "Add a new DataCollection"
+      description: "Performed by a user when he wants to create a new DataCollection"
+      operationId: "addDataCollection"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "dataCollection"
+        description: "DataCollection object that needs to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/dataCollection_1"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/dataCollection"
+        400:
+          description: "Bad Request"
+      x-swagger-router-controller: "DataCollection"
+  /dataCollections/{id}:
+    get:
+      tags:
+      - "dataCollection"
+      summary: "Get an DataCollection by the id"
+      description: "Performed by users in order to get specific DataCollection"
+      operationId: "getDataCollection"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The DataCollection id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/dataCollection"
+        400:
+          description: "Invalid id"
+        404:
+          description: "DataCollection not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "DataCollection"
+    put:
+      tags:
+      - "dataCollection"
+      summary: "Update an existing dataCollection"
+      description: "Performed by a user in order to update the dataCollection"
+      operationId: "updateDataCollection"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The DataCollection id"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "Project object that needs to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/body_1"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/dataCollection"
+        400:
+          description: "Invalid id"
+        404:
+          description: "DataCollection not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "DataCollection"
+    delete:
+      tags:
+      - "dataCollection"
+      summary: "Delete a DataCollection by id"
+      description: "Performed by the user in order to delete the DataCollection from\
+        \ the system"
+      operationId: "deleteDataCollection"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The DataCollection id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/dataCollection"
+        400:
+          description: "Invalid id"
+        404:
+          description: "DataCollection not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "DataCollection"
+  /surveys:
+    get:
+      tags:
+      - "survey"
+      summary: "Get all survey"
+      description: "Performed by a user in order to get all surveys"
+      operationId: "getSurveys"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/survey"
+        400:
+          description: "Bad request"
+      x-swagger-router-controller: "Survey"
+    post:
+      tags:
+      - "survey"
+      summary: "Add a new survey"
+      description: "Performed by a user when he wants to create a new survey in order\
+        \ to collect patient data"
+      operationId: "addSurvey"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "survey"
+        description: "Survey object that needs to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/survey_1"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/survey"
+        400:
+          description: "Bad Request"
+      x-swagger-router-controller: "Survey"
+  /surveys/{id}:
+    get:
+      tags:
+      - "survey"
+      summary: "Get an survey by the id"
+      description: "Performed by users in order to get specific survey"
+      operationId: "getSurvey"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The survey id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/survey"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Survey not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "Survey"
+    put:
+      tags:
+      - "survey"
+      summary: "Update an existing survey"
+      description: "Performed by a user in order to update the survey"
+      operationId: "updateSurvey"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The survey id"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "Survey object that needs to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/body_2"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/survey"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Survey not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "Survey"
+    delete:
+      tags:
+      - "survey"
+      summary: "Delete a survey by id"
+      description: "Performed by the user in order to delete the survey from the system"
+      operationId: "deleteSurvey"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The survey id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/survey"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Survey not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "Survey"
+  /surveyComponents:
+    get:
+      tags:
+      - "surveyComponent"
+      summary: "Get all surveyComponent"
+      description: "Performed by a user in order to get all surveyComponent"
+      operationId: "getAllSurveyComponents"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/surveyComponent"
+        400:
+          description: "Bad request"
+      x-swagger-router-controller: "SurveyComponent"
+    post:
+      tags:
+      - "surveyComponent"
+      summary: "Add a new SurveyComponent"
+      description: "Performed by a user when he wants to create a new surveyComponent\
+        \ in order to collect patient data"
+      operationId: "addSurveyComponent"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "SurveyComponent"
+        description: "SurveyComponent object that needs to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/SurveyComponent"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyComponent"
+        400:
+          description: "Bad Request"
+      x-swagger-router-controller: "SurveyComponent"
+  /surveyComponents/{id}:
+    get:
+      tags:
+      - "surveyComponent"
+      summary: "Get a SurveyComponent by the id"
+      description: "Performed by users in order to get specific SurveyComponent"
+      operationId: "getSurveyComponent"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The SurveyComponent id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/surveyComponent"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyComponent not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "SurveyComponent"
+    put:
+      tags:
+      - "surveyComponent"
+      summary: "Update an existing SurveyComponent"
+      description: "Performed by a user in order to update the surveyComponent"
+      operationId: "updateSurveyComponent"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The SurveyComponent id"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "SurveyComponent object that needs to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/body_3"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyComponent"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyComponent not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "SurveyComponent"
+    delete:
+      tags:
+      - "surveyComponent"
+      summary: "Delete a SurveyItem by id"
+      description: "Performed by the user in order to delete the SurveyItem from the\
+        \ system"
+      operationId: "deleteSurveyComponent"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The SurveyComponent id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyComponent"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyComponent not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "SurveyComponent"
+  /surveyItems:
+    get:
+      tags:
+      - "surveyItem"
+      summary: "Get all surveyItem"
+      description: "Performed by a user in order to get all surveyItem"
+      operationId: "getAllSurveyItems"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/surveyItem"
+        400:
+          description: "Bad request"
+      x-swagger-router-controller: "SurveyItem"
+    post:
+      tags:
+      - "surveyItem"
+      summary: "Add a new SurveyItem"
+      description: "Performed by a user when he wants to create a new SurveyItem"
+      operationId: "addSurveyItem"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "SurveyItem"
+        description: "SurveyItem object that needs to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/SurveyItem"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyItem"
+        400:
+          description: "Bad Request"
+      x-swagger-router-controller: "SurveyItem"
+  /surveyItems/{id}:
+    get:
+      tags:
+      - "surveyItem"
+      summary: "Get a SurveyItem by the id"
+      description: "Performed by users in order to get specific SurveyItem"
+      operationId: "getSurveyItem"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The SurveyItem id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/surveyItem"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyItem not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "SurveyItem"
+    put:
+      tags:
+      - "surveyItem"
+      summary: "Update an existing SurveyItem"
+      description: "Performed by a user in order to update the surveyItem"
+      operationId: "updateSurveyItem"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The SurveyItem id"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "SurveyItem object that needs to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/body_4"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyItem"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyItem not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "SurveyItem"
+    delete:
+      tags:
+      - "surveyItem"
+      summary: "Delete a SurveyItem by id"
+      description: "Performed by the user in order to delete the SurveyItem from the\
+        \ system"
+      operationId: "deleteSurveyItem"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The SurveyItem id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyItem"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyItem not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "SurveyItem"
+  /surveyImages:
+    get:
+      tags:
+      - "surveyImage"
+      summary: "Get all SurveyImage"
+      description: "Performed by a user in order to get all SurveyImage"
+      operationId: "getAllSurveyImages"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/surveyImage"
+        400:
+          description: "Bad request"
+      x-swagger-router-controller: "SurveyImage"
+    post:
+      tags:
+      - "surveyImage"
+      summary: "Add a new SurveyImage"
+      description: "Performed by a user when he wants to create a new SurveyImage"
+      operationId: "addSurveyImage"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "SurveyImage"
+        description: "SurveyImage object that needs to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/SurveyImage"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyImage"
+        400:
+          description: "Bad Request"
+      x-swagger-router-controller: "SurveyImage"
+  /surveyImages/{id}:
+    get:
+      tags:
+      - "surveyImage"
+      summary: "Get a SurveyItem by the id"
+      description: "Performed by users in order to get specific SurveyImage"
+      operationId: "getSurveyImage"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The SurveyImage id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/surveyImage"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyImage not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "SurveyImage"
+    put:
+      tags:
+      - "surveyImage"
+      summary: "Update an existing SurveyImage"
+      description: "Performed by a user in order to update the SurveyImage"
+      operationId: "updateSurveyImage"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The SurveyImage id"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "SurveyImage object that needs to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/body_5"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyImage"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyImage not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "SurveyImage"
+    delete:
+      tags:
+      - "surveyImage"
+      summary: "Delete a SurveyImage by id"
+      description: "Performed by the user in order to delete the SurveyImage from\
+        \ the system"
+      operationId: "deleteSurveyImage"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The SurveyImage id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyImage"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyImage not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "SurveyImage"
+  /flowConstraints:
+    get:
+      tags:
+      - "flowConstraint"
+      summary: "Get all FlowConstraints"
+      description: "Performed by a user in order to get all FlowConstraint"
+      operationId: "getAllFlowConstraints"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/flowConstraint"
+        400:
+          description: "Bad request"
+      x-swagger-router-controller: "FlowConstraint"
+    post:
+      tags:
+      - "flowConstraint"
+      summary: "Add a new FlowConstraint"
+      description: "Performed by a user when he wants to create a new FlowConstraint"
+      operationId: "addFlowConstraint"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "flowConstraint"
+        description: "FlowConstraint object that needs to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/flowConstraint_1"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/flowConstraint"
+        400:
+          description: "Bad Request"
+      x-swagger-router-controller: "FlowConstraint"
+  /flowConstraints/{id}:
+    get:
+      tags:
+      - "flowConstraint"
+      summary: "Get a FlowConstraint by the id"
+      description: "Performed by users in order to get specific FlowConstraint"
+      operationId: "getFlowConstraint"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The FlowConstraint id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/flowConstraint"
+        400:
+          description: "Invalid id"
+        404:
+          description: "FlowConstraint not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "FlowConstraint"
+    put:
+      tags:
+      - "flowConstraint"
+      summary: "Update an existing FlowConstraint"
+      description: "Performed by a user in order to update the FlowConstraint"
+      operationId: "updateFlowConstraint"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The FlowConstraint id"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "FlowConstraint object that needs to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/body_6"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/flowConstraint"
+        400:
+          description: "Invalid id"
+        404:
+          description: "FlowConstraint not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "FlowConstraint"
+    delete:
+      tags:
+      - "flowConstraint"
+      summary: "Delete a FlowConstraint by id"
+      description: "Performed by the user in order to delete the FlowConstraint from\
+        \ the system"
+      operationId: "deleteFlowConstraint"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The FlowConstraint id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/flowConstraint"
+        400:
+          description: "Invalid id"
+        404:
+          description: "FlowConstraint not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "FlowConstraint"
+  /rules:
+    get:
+      tags:
+      - "rule"
+      summary: "Get all Rules"
+      description: "Performed by a user in order to get all Rules"
+      operationId: "getAllRules"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/rule"
+        400:
+          description: "Bad request"
+      x-swagger-router-controller: "Rule"
+    post:
+      tags:
+      - "rule"
+      summary: "Add a new Rule"
+      description: "Performed by a user when he wants to create a new Rule"
+      operationId: "addRule"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "rule"
+        description: "Rule object that needs to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/rule_1"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/rule"
+        400:
+          description: "Bad Request"
+      x-swagger-router-controller: "Rule"
+  /rules/{id}:
+    get:
+      tags:
+      - "rule"
+      summary: "Get a Rule by the id"
+      description: "Performed by users in order to get specific Rule"
+      operationId: "getRule"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The Rule id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/rule"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Rule not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "Rule"
+    put:
+      tags:
+      - "rule"
+      summary: "Update an existing Rule"
+      description: "Performed by a user in order to update the Rule"
+      operationId: "updateRule"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The Rule id"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "Rule object that needs to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/body_7"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/rule"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Rule not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "Rule"
+    delete:
+      tags:
+      - "rule"
+      summary: "Delete a Rule by id"
+      description: "Performed by the user in order to delete the Rule from the system"
+      operationId: "deleteRule"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The Rule id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/rule"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Rule not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "Rule"
+  /validatorItems:
+    get:
+      tags:
+      - "validatorItem"
+      summary: "Get all validatorItem"
+      description: "Performed by a user in order to get all ValidatorItem"
+      operationId: "getAllValidatorItems"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/validatorItem"
+        400:
+          description: "Bad request"
+      x-swagger-router-controller: "ValidatorItem"
+    post:
+      tags:
+      - "validatorItem"
+      summary: "Add a new ValidatorItem"
+      description: "Operation to call in order to create a new ValidatorItem in the\
+        \ system"
+      operationId: "addValidatorItem"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "validatorItem"
+        description: "ValidatorItem object that needs to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/validatorItem_1"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/validatorItem"
+        400:
+          description: "Bad Request"
+      x-swagger-router-controller: "ValidatorItem"
+  /validatorItems/{id}:
+    get:
+      tags:
+      - "validatorItem"
+      summary: "Get a ValidatorItem by the id"
+      description: "Performed by users in order to get specific ValidatorItem"
+      operationId: "getValidatorItem"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The ValidatorItem id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/validatorItem"
+        400:
+          description: "Invalid id"
+        404:
+          description: "ValidatorItem not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "ValidatorItem"
+    put:
+      tags:
+      - "validatorItem"
+      summary: "Update an existing ValidatorItem"
+      description: "Performed by a user in order to update the ValidatorItem"
+      operationId: "updateValidatorItem"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The ValidatorItem id"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "Subject object that needs to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/body_8"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/validatorItem"
+        400:
+          description: "Invalid id"
+        404:
+          description: "ValidatorItem not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "ValidatorItem"
+    delete:
+      tags:
+      - "validatorItem"
+      summary: "Delete a ValidatorItem by id"
+      description: "Performed by the user in order to delete the ValidatorItem from\
+        \ the system"
+      operationId: "deleteValidatorItem"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The ValidatorItem id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/validatorItem"
+        400:
+          description: "Invalid id"
+        404:
+          description: "ValidatorItem not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "ValidatorItem"
+  /labels:
+    get:
+      tags:
+      - "label"
+      summary: "Get all label"
+      description: "Performed by a user in order to get all Label"
+      operationId: "getAllLabels"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/label"
+        400:
+          description: "Bad request"
+      x-swagger-router-controller: "Label"
+    post:
+      tags:
+      - "label"
+      summary: "Add a new Label"
+      description: "Performed by a user when he wants to create a new Label"
+      operationId: "addLabel"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "Label"
+        description: "Label object that needs to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/Label"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/label"
+        400:
+          description: "Bad Request"
+      x-swagger-router-controller: "Label"
+  /labels/{id}:
+    get:
+      tags:
+      - "label"
+      summary: "Get a Label by the id"
+      description: "Performed by users in order to get specific Label"
+      operationId: "getLabel"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The Label id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/label"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Label not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "Label"
+    put:
+      tags:
+      - "label"
+      summary: "Update an existing Label"
+      description: "Performed by a user in order to update the Label"
+      operationId: "updateLabel"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The Label id"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "Label object that needs to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/body_9"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/label"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Label not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "Label"
+    delete:
+      tags:
+      - "label"
+      summary: "Delete a Label by id"
+      description: "Performed by the user in order to delete the Label from the system"
+      operationId: "deleteLabel"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The Label id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/label"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Label not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "Label"
+  /surveyItemOptions:
+    get:
+      tags:
+      - "surveyItemOption"
+      summary: "Get all SurveyItemOption"
+      description: "Performed by a user in order to get all SurveyItemOption"
+      operationId: "getAllSurveyItemOptions"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/surveyItemOption"
+        400:
+          description: "Bad request"
+      x-swagger-router-controller: "SurveyItemOption"
+    post:
+      tags:
+      - "surveyItemOption"
+      summary: "Add a new SurveyItemOption"
+      description: "Performed by a user when he wants to create a new SurveyItemOption"
+      operationId: "addSurveyItemOption"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "surveyItemOption"
+        description: "SurveyItemOption object that needs to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/surveyItemOption_1"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyItemOption"
+        400:
+          description: "Bad Request"
+      x-swagger-router-controller: "SurveyItemOption"
+  /surveyItemOptions/{id}:
+    get:
+      tags:
+      - "surveyItemOption"
+      summary: "Get a SurveyItemOption by the id"
+      description: "Performed by users in order to get specific SurveyItemOption"
+      operationId: "getSurveyItemOption"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The SurveyItemOption id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/surveyItemOption"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyItemOption not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "SurveyItemOption"
+    put:
+      tags:
+      - "surveyItemOption"
+      summary: "Update an existing SurveyItemOption"
+      description: "Performed by a user in order to update the SurveyItemOption"
+      operationId: "updateSurveyItemOption"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The SurveyItemOption id"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "SurveyItemOption object that needs to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/body_10"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyItemOption"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyItemOption not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "SurveyItemOption"
+    delete:
+      tags:
+      - "surveyItemOption"
+      summary: "Delete a SurveyItemOption by id"
+      description: "Performed by the user in order to delete the SurveyItemOption\
+        \ from the system"
+      operationId: "deleteSurveyItemOption"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The SurveyItemOption id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyItemOption"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyItemOption not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "SurveyItemOption"
+  /subjects:
+    get:
+      tags:
+      - "subject"
+      summary: "Get all subject"
+      description: "Performed by a user in order to get all Subject"
+      operationId: "getAllSubjects"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/subject"
+        400:
+          description: "Bad request"
+      x-swagger-router-controller: "Subject"
+    post:
+      tags:
+      - "subject"
+      summary: "Add a new subject"
+      description: "Operation to call in order to create a new Subject in the system"
+      operationId: "addSubject"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "subject"
+        description: "Subject object that needs to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/subject_1"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/subject"
+        400:
+          description: "Bad Request"
+      x-swagger-router-controller: "Subject"
+  /subject/{id}:
+    get:
+      tags:
+      - "subject"
+      summary: "Get a Subject by the id"
+      description: "Performed by users in order to get specific Subject"
+      operationId: "getSubject"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The Subject id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/subject"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Subject not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "Subject"
+    put:
+      tags:
+      - "subject"
+      summary: "Update an existing Subject"
+      description: "Performed by a user in order to update the Subject"
+      operationId: "updateSubject"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The Subject id"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "Subject object that needs to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/body_11"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/subject"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Subject not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "Subject"
+    delete:
+      tags:
+      - "subject"
+      summary: "Delete a Subject by id"
+      description: "Performed by the user in order to delete the Subject from the\
+        \ system"
+      operationId: "deleteSubject"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The Subject id"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/subject"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Subject not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "Subject"
+definitions:
+  project:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the project in the system"
+      name:
+        type: "string"
+        description: "Name assigned to the project"
+      description:
+        type: "string"
+        description: "String that describe the project"
+      collections:
+        type: "array"
+        description: "DataCollection that compose a project"
+        items:
+          $ref: "#/definitions/dataCollection"
+      subjects:
+        type: "array"
+        description: "Subject assigned to the project"
+        items:
+          $ref: "#/definitions/subject"
+    example:
+      collections:
+      - name: "name"
+        surveys:
+        - components:
+          - name: "name"
+            id: 5
+            items:
+            - validators:
+              - id: 2
+                type: "type"
+                value: "value"
+              - id: 2
+                type: "type"
+                value: "value"
+              options:
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              description: "description"
+              rules:
+              - item: 3
+                condition: "condition"
+                id: 9
+              - item: 3
+                condition: "condition"
+                id: 9
+              id: 5
+              type: "type"
+              flowConstraints:
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            - validators:
+              - id: 2
+                type: "type"
+                value: "value"
+              - id: 2
+                type: "type"
+                value: "value"
+              options:
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              description: "description"
+              rules:
+              - item: 3
+                condition: "condition"
+                id: 9
+              - item: 3
+                condition: "condition"
+                id: 9
+              id: 5
+              type: "type"
+              flowConstraints:
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+          - name: "name"
+            id: 5
+            items:
+            - validators:
+              - id: 2
+                type: "type"
+                value: "value"
+              - id: 2
+                type: "type"
+                value: "value"
+              options:
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              description: "description"
+              rules:
+              - item: 3
+                condition: "condition"
+                id: 9
+              - item: 3
+                condition: "condition"
+                id: 9
+              id: 5
+              type: "type"
+              flowConstraints:
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            - validators:
+              - id: 2
+                type: "type"
+                value: "value"
+              - id: 2
+                type: "type"
+                value: "value"
+              options:
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              description: "description"
+              rules:
+              - item: 3
+                condition: "condition"
+                id: 9
+              - item: 3
+                condition: "condition"
+                id: 9
+              id: 5
+              type: "type"
+              flowConstraints:
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+          name: "name"
+          description: "description"
+          id: 1
+        - components:
+          - name: "name"
+            id: 5
+            items:
+            - validators:
+              - id: 2
+                type: "type"
+                value: "value"
+              - id: 2
+                type: "type"
+                value: "value"
+              options:
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              description: "description"
+              rules:
+              - item: 3
+                condition: "condition"
+                id: 9
+              - item: 3
+                condition: "condition"
+                id: 9
+              id: 5
+              type: "type"
+              flowConstraints:
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            - validators:
+              - id: 2
+                type: "type"
+                value: "value"
+              - id: 2
+                type: "type"
+                value: "value"
+              options:
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              description: "description"
+              rules:
+              - item: 3
+                condition: "condition"
+                id: 9
+              - item: 3
+                condition: "condition"
+                id: 9
+              id: 5
+              type: "type"
+              flowConstraints:
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+          - name: "name"
+            id: 5
+            items:
+            - validators:
+              - id: 2
+                type: "type"
+                value: "value"
+              - id: 2
+                type: "type"
+                value: "value"
+              options:
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              description: "description"
+              rules:
+              - item: 3
+                condition: "condition"
+                id: 9
+              - item: 3
+                condition: "condition"
+                id: 9
+              id: 5
+              type: "type"
+              flowConstraints:
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            - validators:
+              - id: 2
+                type: "type"
+                value: "value"
+              - id: 2
+                type: "type"
+                value: "value"
+              options:
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              description: "description"
+              rules:
+              - item: 3
+                condition: "condition"
+                id: 9
+              - item: 3
+                condition: "condition"
+                id: 9
+              id: 5
+              type: "type"
+              flowConstraints:
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+          name: "name"
+          description: "description"
+          id: 1
+        description: "description"
+        id: 6
+      - name: "name"
+        surveys:
+        - components:
+          - name: "name"
+            id: 5
+            items:
+            - validators:
+              - id: 2
+                type: "type"
+                value: "value"
+              - id: 2
+                type: "type"
+                value: "value"
+              options:
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              description: "description"
+              rules:
+              - item: 3
+                condition: "condition"
+                id: 9
+              - item: 3
+                condition: "condition"
+                id: 9
+              id: 5
+              type: "type"
+              flowConstraints:
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            - validators:
+              - id: 2
+                type: "type"
+                value: "value"
+              - id: 2
+                type: "type"
+                value: "value"
+              options:
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              description: "description"
+              rules:
+              - item: 3
+                condition: "condition"
+                id: 9
+              - item: 3
+                condition: "condition"
+                id: 9
+              id: 5
+              type: "type"
+              flowConstraints:
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+          - name: "name"
+            id: 5
+            items:
+            - validators:
+              - id: 2
+                type: "type"
+                value: "value"
+              - id: 2
+                type: "type"
+                value: "value"
+              options:
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              description: "description"
+              rules:
+              - item: 3
+                condition: "condition"
+                id: 9
+              - item: 3
+                condition: "condition"
+                id: 9
+              id: 5
+              type: "type"
+              flowConstraints:
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            - validators:
+              - id: 2
+                type: "type"
+                value: "value"
+              - id: 2
+                type: "type"
+                value: "value"
+              options:
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              description: "description"
+              rules:
+              - item: 3
+                condition: "condition"
+                id: 9
+              - item: 3
+                condition: "condition"
+                id: 9
+              id: 5
+              type: "type"
+              flowConstraints:
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+          name: "name"
+          description: "description"
+          id: 1
+        - components:
+          - name: "name"
+            id: 5
+            items:
+            - validators:
+              - id: 2
+                type: "type"
+                value: "value"
+              - id: 2
+                type: "type"
+                value: "value"
+              options:
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              description: "description"
+              rules:
+              - item: 3
+                condition: "condition"
+                id: 9
+              - item: 3
+                condition: "condition"
+                id: 9
+              id: 5
+              type: "type"
+              flowConstraints:
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            - validators:
+              - id: 2
+                type: "type"
+                value: "value"
+              - id: 2
+                type: "type"
+                value: "value"
+              options:
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              description: "description"
+              rules:
+              - item: 3
+                condition: "condition"
+                id: 9
+              - item: 3
+                condition: "condition"
+                id: 9
+              id: 5
+              type: "type"
+              flowConstraints:
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+          - name: "name"
+            id: 5
+            items:
+            - validators:
+              - id: 2
+                type: "type"
+                value: "value"
+              - id: 2
+                type: "type"
+                value: "value"
+              options:
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              description: "description"
+              rules:
+              - item: 3
+                condition: "condition"
+                id: 9
+              - item: 3
+                condition: "condition"
+                id: 9
+              id: 5
+              type: "type"
+              flowConstraints:
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            - validators:
+              - id: 2
+                type: "type"
+                value: "value"
+              - id: 2
+                type: "type"
+                value: "value"
+              options:
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              - id: 7
+                type: "type"
+                value: "value"
+                labels:
+                - values: "values"
+                  language: "language"
+                  id: 2
+                - values: "values"
+                  language: "language"
+                  id: 2
+              description: "description"
+              rules:
+              - item: 3
+                condition: "condition"
+                id: 9
+              - item: 3
+                condition: "condition"
+                id: 9
+              id: 5
+              type: "type"
+              flowConstraints:
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              - typology: "typology"
+                condition: "condition"
+                id: 4
+                value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+          name: "name"
+          description: "description"
+          id: 1
+        description: "description"
+        id: 6
+      subjects:
+      - role: "role"
+        surname: "surname"
+        name: "name"
+        id: 7
+        email: "email"
+      - role: "role"
+        surname: "surname"
+        name: "name"
+        id: 7
+        email: "email"
+      name: "name"
+      description: "description"
+      id: 0
+  dataCollection:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the dataCollection in the system"
+      name:
+        type: "string"
+        description: "Name assigned to the dataCollection"
+      description:
+        type: "string"
+        description: "String that describe the dataCollection"
+      surveys:
+        type: "array"
+        description: "Surveys that compose a dataCollection"
+        items:
+          $ref: "#/definitions/survey"
+    example:
+      name: "name"
+      surveys:
+      - components:
+        - name: "name"
+          id: 5
+          items:
+          - validators:
+            - id: 2
+              type: "type"
+              value: "value"
+            - id: 2
+              type: "type"
+              value: "value"
+            options:
+            - id: 7
+              type: "type"
+              value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            - id: 7
+              type: "type"
+              value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            description: "description"
+            rules:
+            - item: 3
+              condition: "condition"
+              id: 9
+            - item: 3
+              condition: "condition"
+              id: 9
+            id: 5
+            type: "type"
+            flowConstraints:
+            - typology: "typology"
+              condition: "condition"
+              id: 4
+              value: "value"
+            - typology: "typology"
+              condition: "condition"
+              id: 4
+              value: "value"
+            labels:
+            - values: "values"
+              language: "language"
+              id: 2
+            - values: "values"
+              language: "language"
+              id: 2
+          - validators:
+            - id: 2
+              type: "type"
+              value: "value"
+            - id: 2
+              type: "type"
+              value: "value"
+            options:
+            - id: 7
+              type: "type"
+              value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            - id: 7
+              type: "type"
+              value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            description: "description"
+            rules:
+            - item: 3
+              condition: "condition"
+              id: 9
+            - item: 3
+              condition: "condition"
+              id: 9
+            id: 5
+            type: "type"
+            flowConstraints:
+            - typology: "typology"
+              condition: "condition"
+              id: 4
+              value: "value"
+            - typology: "typology"
+              condition: "condition"
+              id: 4
+              value: "value"
+            labels:
+            - values: "values"
+              language: "language"
+              id: 2
+            - values: "values"
+              language: "language"
+              id: 2
+        - name: "name"
+          id: 5
+          items:
+          - validators:
+            - id: 2
+              type: "type"
+              value: "value"
+            - id: 2
+              type: "type"
+              value: "value"
+            options:
+            - id: 7
+              type: "type"
+              value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            - id: 7
+              type: "type"
+              value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            description: "description"
+            rules:
+            - item: 3
+              condition: "condition"
+              id: 9
+            - item: 3
+              condition: "condition"
+              id: 9
+            id: 5
+            type: "type"
+            flowConstraints:
+            - typology: "typology"
+              condition: "condition"
+              id: 4
+              value: "value"
+            - typology: "typology"
+              condition: "condition"
+              id: 4
+              value: "value"
+            labels:
+            - values: "values"
+              language: "language"
+              id: 2
+            - values: "values"
+              language: "language"
+              id: 2
+          - validators:
+            - id: 2
+              type: "type"
+              value: "value"
+            - id: 2
+              type: "type"
+              value: "value"
+            options:
+            - id: 7
+              type: "type"
+              value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            - id: 7
+              type: "type"
+              value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            description: "description"
+            rules:
+            - item: 3
+              condition: "condition"
+              id: 9
+            - item: 3
+              condition: "condition"
+              id: 9
+            id: 5
+            type: "type"
+            flowConstraints:
+            - typology: "typology"
+              condition: "condition"
+              id: 4
+              value: "value"
+            - typology: "typology"
+              condition: "condition"
+              id: 4
+              value: "value"
+            labels:
+            - values: "values"
+              language: "language"
+              id: 2
+            - values: "values"
+              language: "language"
+              id: 2
+        name: "name"
+        description: "description"
+        id: 1
+      - components:
+        - name: "name"
+          id: 5
+          items:
+          - validators:
+            - id: 2
+              type: "type"
+              value: "value"
+            - id: 2
+              type: "type"
+              value: "value"
+            options:
+            - id: 7
+              type: "type"
+              value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            - id: 7
+              type: "type"
+              value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            description: "description"
+            rules:
+            - item: 3
+              condition: "condition"
+              id: 9
+            - item: 3
+              condition: "condition"
+              id: 9
+            id: 5
+            type: "type"
+            flowConstraints:
+            - typology: "typology"
+              condition: "condition"
+              id: 4
+              value: "value"
+            - typology: "typology"
+              condition: "condition"
+              id: 4
+              value: "value"
+            labels:
+            - values: "values"
+              language: "language"
+              id: 2
+            - values: "values"
+              language: "language"
+              id: 2
+          - validators:
+            - id: 2
+              type: "type"
+              value: "value"
+            - id: 2
+              type: "type"
+              value: "value"
+            options:
+            - id: 7
+              type: "type"
+              value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            - id: 7
+              type: "type"
+              value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            description: "description"
+            rules:
+            - item: 3
+              condition: "condition"
+              id: 9
+            - item: 3
+              condition: "condition"
+              id: 9
+            id: 5
+            type: "type"
+            flowConstraints:
+            - typology: "typology"
+              condition: "condition"
+              id: 4
+              value: "value"
+            - typology: "typology"
+              condition: "condition"
+              id: 4
+              value: "value"
+            labels:
+            - values: "values"
+              language: "language"
+              id: 2
+            - values: "values"
+              language: "language"
+              id: 2
+        - name: "name"
+          id: 5
+          items:
+          - validators:
+            - id: 2
+              type: "type"
+              value: "value"
+            - id: 2
+              type: "type"
+              value: "value"
+            options:
+            - id: 7
+              type: "type"
+              value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            - id: 7
+              type: "type"
+              value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            description: "description"
+            rules:
+            - item: 3
+              condition: "condition"
+              id: 9
+            - item: 3
+              condition: "condition"
+              id: 9
+            id: 5
+            type: "type"
+            flowConstraints:
+            - typology: "typology"
+              condition: "condition"
+              id: 4
+              value: "value"
+            - typology: "typology"
+              condition: "condition"
+              id: 4
+              value: "value"
+            labels:
+            - values: "values"
+              language: "language"
+              id: 2
+            - values: "values"
+              language: "language"
+              id: 2
+          - validators:
+            - id: 2
+              type: "type"
+              value: "value"
+            - id: 2
+              type: "type"
+              value: "value"
+            options:
+            - id: 7
+              type: "type"
+              value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            - id: 7
+              type: "type"
+              value: "value"
+              labels:
+              - values: "values"
+                language: "language"
+                id: 2
+              - values: "values"
+                language: "language"
+                id: 2
+            description: "description"
+            rules:
+            - item: 3
+              condition: "condition"
+              id: 9
+            - item: 3
+              condition: "condition"
+              id: 9
+            id: 5
+            type: "type"
+            flowConstraints:
+            - typology: "typology"
+              condition: "condition"
+              id: 4
+              value: "value"
+            - typology: "typology"
+              condition: "condition"
+              id: 4
+              value: "value"
+            labels:
+            - values: "values"
+              language: "language"
+              id: 2
+            - values: "values"
+              language: "language"
+              id: 2
+        name: "name"
+        description: "description"
+        id: 1
+      description: "description"
+      id: 6
+  survey:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the survey in the system"
+      name:
+        type: "string"
+        description: "Name assigned to the survey"
+      description:
+        type: "string"
+        description: "String that describe the survey"
+      components:
+        type: "array"
+        description: "SurveyComponent that compose a survey"
+        items:
+          $ref: "#/definitions/surveyComponent"
+    example:
+      components:
+      - name: "name"
+        id: 5
+        items:
+        - validators:
+          - id: 2
+            type: "type"
+            value: "value"
+          - id: 2
+            type: "type"
+            value: "value"
+          options:
+          - id: 7
+            type: "type"
+            value: "value"
+            labels:
+            - values: "values"
+              language: "language"
+              id: 2
+            - values: "values"
+              language: "language"
+              id: 2
+          - id: 7
+            type: "type"
+            value: "value"
+            labels:
+            - values: "values"
+              language: "language"
+              id: 2
+            - values: "values"
+              language: "language"
+              id: 2
+          description: "description"
+          rules:
+          - item: 3
+            condition: "condition"
+            id: 9
+          - item: 3
+            condition: "condition"
+            id: 9
+          id: 5
+          type: "type"
+          flowConstraints:
+          - typology: "typology"
+            condition: "condition"
+            id: 4
+            value: "value"
+          - typology: "typology"
+            condition: "condition"
+            id: 4
+            value: "value"
+          labels:
+          - values: "values"
+            language: "language"
+            id: 2
+          - values: "values"
+            language: "language"
+            id: 2
+        - validators:
+          - id: 2
+            type: "type"
+            value: "value"
+          - id: 2
+            type: "type"
+            value: "value"
+          options:
+          - id: 7
+            type: "type"
+            value: "value"
+            labels:
+            - values: "values"
+              language: "language"
+              id: 2
+            - values: "values"
+              language: "language"
+              id: 2
+          - id: 7
+            type: "type"
+            value: "value"
+            labels:
+            - values: "values"
+              language: "language"
+              id: 2
+            - values: "values"
+              language: "language"
+              id: 2
+          description: "description"
+          rules:
+          - item: 3
+            condition: "condition"
+            id: 9
+          - item: 3
+            condition: "condition"
+            id: 9
+          id: 5
+          type: "type"
+          flowConstraints:
+          - typology: "typology"
+            condition: "condition"
+            id: 4
+            value: "value"
+          - typology: "typology"
+            condition: "condition"
+            id: 4
+            value: "value"
+          labels:
+          - values: "values"
+            language: "language"
+            id: 2
+          - values: "values"
+            language: "language"
+            id: 2
+      - name: "name"
+        id: 5
+        items:
+        - validators:
+          - id: 2
+            type: "type"
+            value: "value"
+          - id: 2
+            type: "type"
+            value: "value"
+          options:
+          - id: 7
+            type: "type"
+            value: "value"
+            labels:
+            - values: "values"
+              language: "language"
+              id: 2
+            - values: "values"
+              language: "language"
+              id: 2
+          - id: 7
+            type: "type"
+            value: "value"
+            labels:
+            - values: "values"
+              language: "language"
+              id: 2
+            - values: "values"
+              language: "language"
+              id: 2
+          description: "description"
+          rules:
+          - item: 3
+            condition: "condition"
+            id: 9
+          - item: 3
+            condition: "condition"
+            id: 9
+          id: 5
+          type: "type"
+          flowConstraints:
+          - typology: "typology"
+            condition: "condition"
+            id: 4
+            value: "value"
+          - typology: "typology"
+            condition: "condition"
+            id: 4
+            value: "value"
+          labels:
+          - values: "values"
+            language: "language"
+            id: 2
+          - values: "values"
+            language: "language"
+            id: 2
+        - validators:
+          - id: 2
+            type: "type"
+            value: "value"
+          - id: 2
+            type: "type"
+            value: "value"
+          options:
+          - id: 7
+            type: "type"
+            value: "value"
+            labels:
+            - values: "values"
+              language: "language"
+              id: 2
+            - values: "values"
+              language: "language"
+              id: 2
+          - id: 7
+            type: "type"
+            value: "value"
+            labels:
+            - values: "values"
+              language: "language"
+              id: 2
+            - values: "values"
+              language: "language"
+              id: 2
+          description: "description"
+          rules:
+          - item: 3
+            condition: "condition"
+            id: 9
+          - item: 3
+            condition: "condition"
+            id: 9
+          id: 5
+          type: "type"
+          flowConstraints:
+          - typology: "typology"
+            condition: "condition"
+            id: 4
+            value: "value"
+          - typology: "typology"
+            condition: "condition"
+            id: 4
+            value: "value"
+          labels:
+          - values: "values"
+            language: "language"
+            id: 2
+          - values: "values"
+            language: "language"
+            id: 2
+      name: "name"
+      description: "description"
+      id: 1
+  surveyComponent:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the SurveyComponent"
+      name:
+        type: "string"
+        description: "Name thah describe the SurveyComponent"
+      items:
+        type: "array"
+        description: "Items that compose a surveyComponent"
+        items:
+          $ref: "#/definitions/surveyItem"
+    example:
+      name: "name"
+      id: 5
+      items:
+      - validators:
+        - id: 2
+          type: "type"
+          value: "value"
+        - id: 2
+          type: "type"
+          value: "value"
+        options:
+        - id: 7
+          type: "type"
+          value: "value"
+          labels:
+          - values: "values"
+            language: "language"
+            id: 2
+          - values: "values"
+            language: "language"
+            id: 2
+        - id: 7
+          type: "type"
+          value: "value"
+          labels:
+          - values: "values"
+            language: "language"
+            id: 2
+          - values: "values"
+            language: "language"
+            id: 2
+        description: "description"
+        rules:
+        - item: 3
+          condition: "condition"
+          id: 9
+        - item: 3
+          condition: "condition"
+          id: 9
+        id: 5
+        type: "type"
+        flowConstraints:
+        - typology: "typology"
+          condition: "condition"
+          id: 4
+          value: "value"
+        - typology: "typology"
+          condition: "condition"
+          id: 4
+          value: "value"
+        labels:
+        - values: "values"
+          language: "language"
+          id: 2
+        - values: "values"
+          language: "language"
+          id: 2
+      - validators:
+        - id: 2
+          type: "type"
+          value: "value"
+        - id: 2
+          type: "type"
+          value: "value"
+        options:
+        - id: 7
+          type: "type"
+          value: "value"
+          labels:
+          - values: "values"
+            language: "language"
+            id: 2
+          - values: "values"
+            language: "language"
+            id: 2
+        - id: 7
+          type: "type"
+          value: "value"
+          labels:
+          - values: "values"
+            language: "language"
+            id: 2
+          - values: "values"
+            language: "language"
+            id: 2
+        description: "description"
+        rules:
+        - item: 3
+          condition: "condition"
+          id: 9
+        - item: 3
+          condition: "condition"
+          id: 9
+        id: 5
+        type: "type"
+        flowConstraints:
+        - typology: "typology"
+          condition: "condition"
+          id: 4
+          value: "value"
+        - typology: "typology"
+          condition: "condition"
+          id: 4
+          value: "value"
+        labels:
+        - values: "values"
+          language: "language"
+          id: 2
+        - values: "values"
+          language: "language"
+          id: 2
+  surveyItem:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the SurveyItem"
+      description:
+        type: "string"
+        description: "Description for the item"
+      labels:
+        type: "array"
+        description: "Objects that allow the surveyItem to be displayed in different\
+          \ languages"
+        items:
+          $ref: "#/definitions/label"
+      type:
+        type: "string"
+        description: "Name that identify the type of the surveyItemOption"
+      options:
+        type: "array"
+        description: "Option that the user can select"
+        items:
+          $ref: "#/definitions/surveyItemOption"
+      rules:
+        type: "array"
+        description: "Rules in order to apply consistency checks"
+        items:
+          $ref: "#/definitions/rule"
+      validators:
+        type: "array"
+        description: "Object in order to validate the user answers"
+        items:
+          $ref: "#/definitions/validatorItem"
+      flowConstraints:
+        type: "array"
+        description: "FlowConstraints to apply"
+        items:
+          $ref: "#/definitions/flowConstraint"
+    example:
+      validators:
+      - id: 2
+        type: "type"
+        value: "value"
+      - id: 2
+        type: "type"
+        value: "value"
+      options:
+      - id: 7
+        type: "type"
+        value: "value"
+        labels:
+        - values: "values"
+          language: "language"
+          id: 2
+        - values: "values"
+          language: "language"
+          id: 2
+      - id: 7
+        type: "type"
+        value: "value"
+        labels:
+        - values: "values"
+          language: "language"
+          id: 2
+        - values: "values"
+          language: "language"
+          id: 2
+      description: "description"
+      rules:
+      - item: 3
+        condition: "condition"
+        id: 9
+      - item: 3
+        condition: "condition"
+        id: 9
+      id: 5
+      type: "type"
+      flowConstraints:
+      - typology: "typology"
+        condition: "condition"
+        id: 4
+        value: "value"
+      - typology: "typology"
+        condition: "condition"
+        id: 4
+        value: "value"
+      labels:
+      - values: "values"
+        language: "language"
+        id: 2
+      - values: "values"
+        language: "language"
+        id: 2
+  surveyImage:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the SurveyItem"
+      description:
+        type: "string"
+        description: "Description for the item"
+      link:
+        type: "string"
+        description: "Link to the image file"
+      labels:
+        type: "array"
+        description: "Objects that allow the surveyItem to be displayed in different\
+          \ languages"
+        items:
+          $ref: "#/definitions/label"
+      type:
+        type: "string"
+        description: "Name that identify the type of the surveyItemOption"
+      options:
+        type: "array"
+        description: "Option that the user can select"
+        items:
+          $ref: "#/definitions/surveyItemOption"
+      rules:
+        type: "array"
+        description: "Rules in order to apply consistency checks"
+        items:
+          $ref: "#/definitions/rule"
+      validators:
+        type: "array"
+        description: "Object in order to validate the user answers"
+        items:
+          $ref: "#/definitions/validatorItem"
+      flowConstraints:
+        type: "array"
+        description: "FlowConstraints to apply"
+        items:
+          $ref: "#/definitions/flowConstraint"
+    example:
+      validators:
+      - id: 2
+        type: "type"
+        value: "value"
+      - id: 2
+        type: "type"
+        value: "value"
+      link: "link"
+      options:
+      - id: 7
+        type: "type"
+        value: "value"
+        labels:
+        - values: "values"
+          language: "language"
+          id: 2
+        - values: "values"
+          language: "language"
+          id: 2
+      - id: 7
+        type: "type"
+        value: "value"
+        labels:
+        - values: "values"
+          language: "language"
+          id: 2
+        - values: "values"
+          language: "language"
+          id: 2
+      description: "description"
+      rules:
+      - item: 3
+        condition: "condition"
+        id: 9
+      - item: 3
+        condition: "condition"
+        id: 9
+      id: 0
+      type: "type"
+      flowConstraints:
+      - typology: "typology"
+        condition: "condition"
+        id: 4
+        value: "value"
+      - typology: "typology"
+        condition: "condition"
+        id: 4
+        value: "value"
+      labels:
+      - values: "values"
+        language: "language"
+        id: 2
+      - values: "values"
+        language: "language"
+        id: 2
+  label:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the label"
+      language:
+        type: "string"
+        description: "Contains the language of the question"
+      values:
+        type: "string"
+        description: "Contains the question in the language indicated in the language\
+          \ field"
+    example:
+      values: "values"
+      language: "language"
+      id: 2
+  flowConstraint:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the label"
+      typology:
+        type: "string"
+        description: "Describe the type of constraint"
+      condition:
+        type: "string"
+        description: "Condition to apply the constraint"
+      value:
+        type: "string"
+        description: "Value of the constraint"
+    example:
+      typology: "typology"
+      condition: "condition"
+      id: 4
+      value: "value"
+  rule:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the label"
+      item:
+        type: "integer"
+        description: "id of the previous item in order to check its value"
+      condition:
+        type: "string"
+        description: "Condition to verify"
+    example:
+      item: 3
+      condition: "condition"
+      id: 9
+  validatorItem:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the validatorItem in the system"
+      type:
+        type: "string"
+        description: "Type of the validation value"
+      value:
+        type: "string"
+        description: "Value in order to validate the data"
+    example:
+      id: 2
+      type: "type"
+      value: "value"
+  surveyItemOption:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the SurveyItemOption"
+      value:
+        type: "string"
+        description: "Name that describe the SurveyItemOption"
+      type:
+        type: "string"
+        description: "Name that identify the type of the surveyItemOption"
+      labels:
+        type: "array"
+        description: "Values in order to answer to a specific question"
+        items:
+          $ref: "#/definitions/label"
+    example:
+      id: 7
+      type: "type"
+      value: "value"
+      labels:
+      - values: "values"
+        language: "language"
+        id: 2
+      - values: "values"
+        language: "language"
+        id: 2
+  subject:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the subject in the system"
+      name:
+        type: "string"
+        description: "Name of the subject"
+      surname:
+        type: "string"
+        description: "Surname of the subject"
+      email:
+        type: "string"
+        description: "Email of the subject"
+      role:
+        type: "string"
+        description: "Role of the subject in the system"
+    example:
+      role: "role"
+      surname: "surname"
+      name: "name"
+      id: 7
+      email: "email"
+  datetime:
+    type: "object"
+    properties:
+      year:
+        type: "integer"
+        format: "int64"
+        minimum: 1900
+      month:
+        type: "integer"
+        format: "int32"
+        minimum: 1
+        maximum: 12
+      day:
+        type: "integer"
+        format: "int32"
+        minimum: 1
+        maximum: 31
+      hour:
+        type: "integer"
+        format: "int32"
+        minimum: 0
+        maximum: 23
+      minute:
+        type: "integer"
+        format: "int32"
+        minimum: 0
+        maximum: 60
+      second:
+        type: "integer"
+        format: "int32"
+        minimum: 0
+        maximum: 60
+  project_1:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Name assigned to the project"
+      description:
+        type: "string"
+        description: "String that describe the project"
+      collections:
+        type: "array"
+        description: "DataCollection that compose a project"
+        items:
+          $ref: "#/definitions/dataCollection"
+      subjects:
+        type: "array"
+        description: "Subject assigned to the project"
+        items:
+          $ref: "#/definitions/subject"
+  body:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the project in the system"
+      name:
+        type: "string"
+        description: "Name assigned to the project"
+      description:
+        type: "string"
+        description: "String that describe the project"
+      collections:
+        type: "array"
+        description: "DataCollection that compose a project"
+        items:
+          $ref: "#/definitions/dataCollection"
+      subjects:
+        type: "array"
+        description: "Subject assigned to the project"
+        items:
+          $ref: "#/definitions/subject"
+  dataCollection_1:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Name assigned to the dataCollection"
+      description:
+        type: "string"
+        description: "String that describe the dataCollection"
+      surveys:
+        type: "array"
+        description: "Surveys that compose a dataCollection"
+        items:
+          $ref: "#/definitions/survey"
+  body_1:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the dataCollection in the system"
+      name:
+        type: "string"
+        description: "Name assigned to the dataCollection"
+      description:
+        type: "string"
+        description: "String that describe the dataCollection"
+      surveys:
+        type: "array"
+        description: "Surveys that compose a dataCollection"
+        items:
+          $ref: "#/definitions/survey"
+  survey_1:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Name assigned to the survey"
+      description:
+        type: "string"
+        description: "String that describe the survey"
+      components:
+        type: "array"
+        description: "SurveyComponent that compose a survey"
+        items:
+          $ref: "#/definitions/surveyComponent"
+  body_2:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the survey in the system"
+      name:
+        type: "string"
+        description: "Name assigned to the survey"
+      description:
+        type: "string"
+        description: "String that describe the survey"
+      components:
+        type: "array"
+        description: "SurveyComponent that compose a survey"
+        items:
+          $ref: "#/definitions/surveyComponent"
+  SurveyComponent:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Name thah describe the SurveyComponent"
+      items:
+        type: "array"
+        description: "Items that compose a surveyComponent"
+        items:
+          $ref: "#/definitions/surveyItem"
+    example:
+      name: "name"
+      items:
+      - validators:
+        - id: 2
+          type: "type"
+          value: "value"
+        - id: 2
+          type: "type"
+          value: "value"
+        options:
+        - id: 7
+          type: "type"
+          value: "value"
+          labels:
+          - values: "values"
+            language: "language"
+            id: 2
+          - values: "values"
+            language: "language"
+            id: 2
+        - id: 7
+          type: "type"
+          value: "value"
+          labels:
+          - values: "values"
+            language: "language"
+            id: 2
+          - values: "values"
+            language: "language"
+            id: 2
+        description: "description"
+        rules:
+        - item: 3
+          condition: "condition"
+          id: 9
+        - item: 3
+          condition: "condition"
+          id: 9
+        id: 5
+        type: "type"
+        flowConstraints:
+        - typology: "typology"
+          condition: "condition"
+          id: 4
+          value: "value"
+        - typology: "typology"
+          condition: "condition"
+          id: 4
+          value: "value"
+        labels:
+        - values: "values"
+          language: "language"
+          id: 2
+        - values: "values"
+          language: "language"
+          id: 2
+      - validators:
+        - id: 2
+          type: "type"
+          value: "value"
+        - id: 2
+          type: "type"
+          value: "value"
+        options:
+        - id: 7
+          type: "type"
+          value: "value"
+          labels:
+          - values: "values"
+            language: "language"
+            id: 2
+          - values: "values"
+            language: "language"
+            id: 2
+        - id: 7
+          type: "type"
+          value: "value"
+          labels:
+          - values: "values"
+            language: "language"
+            id: 2
+          - values: "values"
+            language: "language"
+            id: 2
+        description: "description"
+        rules:
+        - item: 3
+          condition: "condition"
+          id: 9
+        - item: 3
+          condition: "condition"
+          id: 9
+        id: 5
+        type: "type"
+        flowConstraints:
+        - typology: "typology"
+          condition: "condition"
+          id: 4
+          value: "value"
+        - typology: "typology"
+          condition: "condition"
+          id: 4
+          value: "value"
+        labels:
+        - values: "values"
+          language: "language"
+          id: 2
+        - values: "values"
+          language: "language"
+          id: 2
+  body_3:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the SurveyComponent"
+      name:
+        type: "string"
+        description: "Name thah describe the SurveyComponent"
+      items:
+        type: "array"
+        description: "Items that compose a surveyComponent"
+        items:
+          $ref: "#/definitions/surveyItem"
+  SurveyItem:
+    type: "object"
+    properties:
+      description:
+        type: "string"
+        description: "Description for the item"
+      labels:
+        type: "array"
+        description: "Objects that allow the surveyItem to be displayed in different\
+          \ languages"
+        items:
+          $ref: "#/definitions/label"
+      type:
+        type: "string"
+        description: "Name that identify the type of the surveyItemOption"
+      options:
+        type: "array"
+        description: "Option that the user can select"
+        items:
+          $ref: "#/definitions/surveyItemOption"
+      rules:
+        type: "array"
+        description: "Rules in order to apply consistency checks"
+        items:
+          $ref: "#/definitions/rule"
+      validators:
+        type: "array"
+        description: "Object in order to validate the user answers"
+        items:
+          $ref: "#/definitions/validatorItem"
+      flowConstraints:
+        type: "array"
+        description: "FlowConstraints to apply"
+        items:
+          $ref: "#/definitions/flowConstraint"
+    example:
+      validators:
+      - id: 2
+        type: "type"
+        value: "value"
+      - id: 2
+        type: "type"
+        value: "value"
+      options:
+      - id: 7
+        type: "type"
+        value: "value"
+        labels:
+        - values: "values"
+          language: "language"
+          id: 2
+        - values: "values"
+          language: "language"
+          id: 2
+      - id: 7
+        type: "type"
+        value: "value"
+        labels:
+        - values: "values"
+          language: "language"
+          id: 2
+        - values: "values"
+          language: "language"
+          id: 2
+      description: "description"
+      rules:
+      - item: 3
+        condition: "condition"
+        id: 9
+      - item: 3
+        condition: "condition"
+        id: 9
+      type: "type"
+      flowConstraints:
+      - typology: "typology"
+        condition: "condition"
+        id: 4
+        value: "value"
+      - typology: "typology"
+        condition: "condition"
+        id: 4
+        value: "value"
+      labels:
+      - values: "values"
+        language: "language"
+        id: 2
+      - values: "values"
+        language: "language"
+        id: 2
+  body_4:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the SurveyItem"
+      description:
+        type: "string"
+        description: "Description for the item"
+      labels:
+        type: "array"
+        description: "Objects that allow the surveyItem to be displayed in different\
+          \ languages"
+        items:
+          $ref: "#/definitions/label"
+      type:
+        type: "string"
+        description: "Name that identify the type of the surveyItemOption"
+      options:
+        type: "array"
+        description: "Option that the user can select"
+        items:
+          $ref: "#/definitions/surveyItemOption"
+      rules:
+        type: "array"
+        description: "Rules in order to apply consistency checks"
+        items:
+          $ref: "#/definitions/rule"
+      validators:
+        type: "array"
+        description: "Object in order to validate the user answers"
+        items:
+          $ref: "#/definitions/validatorItem"
+      flowConstraints:
+        type: "array"
+        description: "FlowConstraints to apply"
+        items:
+          $ref: "#/definitions/flowConstraint"
+  SurveyImage:
+    type: "object"
+    properties:
+      description:
+        type: "string"
+        description: "Description for the item"
+      link:
+        type: "string"
+        description: "Link to the image file"
+      labels:
+        type: "array"
+        description: "Objects that allow the surveyItem to be displayed in different\
+          \ languages"
+        items:
+          $ref: "#/definitions/label"
+      type:
+        type: "string"
+        description: "Name that identify the type of the surveyItemOption"
+      options:
+        type: "array"
+        description: "Option that the user can select"
+        items:
+          $ref: "#/definitions/surveyItemOption"
+      rules:
+        type: "array"
+        description: "Rules in order to apply consistency checks"
+        items:
+          $ref: "#/definitions/rule"
+      validators:
+        type: "array"
+        description: "Object in order to validate the user answers"
+        items:
+          $ref: "#/definitions/validatorItem"
+      flowConstraints:
+        type: "array"
+        description: "FlowConstraints to apply"
+        items:
+          $ref: "#/definitions/flowConstraint"
+    example:
+      validators:
+      - id: 2
+        type: "type"
+        value: "value"
+      - id: 2
+        type: "type"
+        value: "value"
+      link: "link"
+      options:
+      - id: 7
+        type: "type"
+        value: "value"
+        labels:
+        - values: "values"
+          language: "language"
+          id: 2
+        - values: "values"
+          language: "language"
+          id: 2
+      - id: 7
+        type: "type"
+        value: "value"
+        labels:
+        - values: "values"
+          language: "language"
+          id: 2
+        - values: "values"
+          language: "language"
+          id: 2
+      description: "description"
+      rules:
+      - item: 3
+        condition: "condition"
+        id: 9
+      - item: 3
+        condition: "condition"
+        id: 9
+      type: "type"
+      flowConstraints:
+      - typology: "typology"
+        condition: "condition"
+        id: 4
+        value: "value"
+      - typology: "typology"
+        condition: "condition"
+        id: 4
+        value: "value"
+      labels:
+      - values: "values"
+        language: "language"
+        id: 2
+      - values: "values"
+        language: "language"
+        id: 2
+  body_5:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the SurveyItem"
+      description:
+        type: "string"
+        description: "Description for the item"
+      link:
+        type: "string"
+        description: "Link to the image file"
+      labels:
+        type: "array"
+        description: "Objects that allow the surveyItem to be displayed in different\
+          \ languages"
+        items:
+          $ref: "#/definitions/label"
+      type:
+        type: "string"
+        description: "Name that identify the type of the surveyItemOption"
+      options:
+        type: "array"
+        description: "Option that the user can select"
+        items:
+          $ref: "#/definitions/surveyItemOption"
+      rules:
+        type: "array"
+        description: "Rules in order to apply consistency checks"
+        items:
+          $ref: "#/definitions/rule"
+      validators:
+        type: "array"
+        description: "Object in order to validate the user answers"
+        items:
+          $ref: "#/definitions/validatorItem"
+      flowConstraints:
+        type: "array"
+        description: "FlowConstraints to apply"
+        items:
+          $ref: "#/definitions/flowConstraint"
+  flowConstraint_1:
+    type: "object"
+    properties:
+      typology:
+        type: "string"
+        description: "Describe the type of constraint"
+      condition:
+        type: "string"
+        description: "Condition to apply the constraint"
+      value:
+        type: "string"
+        description: "Value of the constraint"
+  body_6:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the label"
+      typology:
+        type: "string"
+        description: "Describe the type of constraint"
+      condition:
+        type: "string"
+        description: "Condition to apply the constraint"
+      value:
+        type: "string"
+        description: "Value of the constraint"
+  rule_1:
+    type: "object"
+    properties:
+      item:
+        type: "integer"
+        description: "id of the previous item in order to checkoì its value"
+      condition:
+        type: "string"
+        description: "Condition to verify"
+  body_7:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the label"
+      item:
+        type: "integer"
+        description: "id of the previous item in order to checkoì its value"
+      condition:
+        type: "string"
+        description: "Condition to verify"
+  validatorItem_1:
+    type: "object"
+    properties:
+      type:
+        type: "string"
+        description: "Type of the validation value"
+      value:
+        type: "string"
+        description: "Value in order to validate the data"
+  body_8:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the validatorItem in the system"
+      type:
+        type: "string"
+        description: "Type of the validation value"
+      value:
+        type: "string"
+        description: "Value in order to validate the data"
+  Label:
+    type: "object"
+    properties:
+      language:
+        type: "string"
+        description: "Contains the language of the question"
+      values:
+        type: "string"
+        description: "Contains the question in the language indicated in the language\
+          \ field"
+    example:
+      values: "values"
+      language: "language"
+  body_9:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the label"
+      language:
+        type: "string"
+        description: "Contains the language of the question"
+      values:
+        type: "string"
+        description: "Contains the question in the language indicated in the language\
+          \ field"
+  surveyItemOption_1:
+    type: "object"
+    properties:
+      value:
+        type: "string"
+        description: "Name that describe the SurveyItemOption"
+      type:
+        type: "string"
+        description: "Name that identify the type of the surveyItemOption"
+      labels:
+        type: "array"
+        description: "Values in order to answer to a specific question"
+        items:
+          $ref: "#/definitions/label"
+  body_10:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the SurveyItemOption"
+      value:
+        type: "string"
+        description: "Name that describe the SurveyItemOption"
+      type:
+        type: "string"
+        description: "Name that identify the type of the surveyItemOption"
+      labels:
+        type: "array"
+        description: "Values in order to answer to a specific question"
+        items:
+          $ref: "#/definitions/label"
+  subject_1:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Name of the subject"
+      surname:
+        type: "string"
+        description: "Surname of the subject"
+      email:
+        type: "string"
+        description: "Email of the subject"
+      role:
+        type: "string"
+        description: "Role of the subject in the system"
+  body_11:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the subject in the system"
+      name:
+        type: "string"
+        description: "Name of the subject"
+      surname:
+        type: "string"
+        description: "Surname of the subject"
+      email:
+        type: "string"
+        description: "Email of the subject"
+      role:
+        type: "string"
+        description: "Role of the subject in the system"
